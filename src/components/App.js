@@ -1,11 +1,12 @@
 import React from 'react';
-import LoginForm from './LoginForm';
+import LoRe from './LoRe';
 
 class App extends React.Component{
+
   render(){
     return(
       <div>
-        <LoginForm />
+        <LoRe/>
       </div>
     )
   }
