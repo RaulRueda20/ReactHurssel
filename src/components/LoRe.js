@@ -5,15 +5,13 @@ import Header from './Header';
 import Footer from './Footer';
 
 class LoRe extends React.Component{
-  constructor(props){
 
-    super(props);
-  }
   state = {login: true}
 
-  setLogin = (login) =>{
-    this.setState({ login:login })
+  setLogin = (login) => {
+    if(this.state.login != login) this.setState({ login:login })
   }
+
 
   render(){
     return(

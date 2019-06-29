@@ -3,19 +3,19 @@ import AppBar from '@material-ui/core/AppBar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 
-const styles = {
+const stylesfot = {
   appBar: {
-   top: 'auto',
+   top: 30,
    marginBottom: "5vh",
    flexGrow: 1
  },
  footer1:{
-   marginTop: 50,
-   fontSize: 15
+   marginTop: 100,
+   fontSize: 18
  },
  footer2:{
-   marginTop: 30,
-   fontSize: 15
+   marginTop: 50,
+   fontSize: 18
  }
 }
 
@@ -37,4 +37,4 @@ class Footer extends React.Component{
     )
   }
 }
-export default withStyles(styles)(Footer);
+export default withStyles(stylesfot)(Footer);

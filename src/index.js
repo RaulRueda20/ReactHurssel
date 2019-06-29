@@ -8,8 +8,8 @@ import App from './components/App';
 
 const theme = createMuiTheme({
   palette: {
-   primary: { main: red[800]}, // Purple and green play nicely together.
-   secondary: { main:"#f50057"}, // This is just green.A700 as hex.
+   primary: { main: red[800]},
+   secondary: { main:"#f50057"}, 
  },
 });
 

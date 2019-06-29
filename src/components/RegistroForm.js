@@ -4,9 +4,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/styles';
-import Link from '@material-ui/core/Link';
 
-const styles = {
+
+const stylesReg = {
   subtitulo1:{
     marginTop: 20,
     fontSize: 20
@@ -42,7 +42,7 @@ class RegistroForm extends React.Component {
 
     return (
       <form>
-        <Grid container className={classes.texto1} direction="column" justify="center" alignItems="center" spacing={16}>
+        <Grid container className={classes.texto1} direction="column" justify="center" alignItems="center" spacing={10}>
           <Grid item>
             <Typography className={classes.subtitulo2} variant="subtitle2" gutterBottom >
               Registro
@@ -140,14 +140,14 @@ class RegistroForm extends React.Component {
               Registrarse
             </Button>
           </Grid>
-          ¿Ya está registrado? Ingrese
-          <Link onClick={this.props.setLogin(true)}>
+          ¿Ya está registrado?, Ingrese
+          <a onClick={() => this.props.setLogin(true)}>
             aquí
-          </Link>
+          </a>
         </Grid>
       </form>
     )
   }
 }
 
-export default withStyles(styles)(RegistroForm);
+export default withStyles(stylesReg)(RegistroForm);
