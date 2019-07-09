@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/styles';
 import Grid from '@material-ui/core/Grid';
 
+import MenuIdiomas from './MenuIdiomas';
 
 const stylesHed = {
   subtitulo1:{
@@ -26,13 +27,16 @@ class Header extends React.Component{
     const { classes } = this.props;
     return(
       <Grid container justify="center">
-        <Grid Item xs={11}  align="center">
+        <Grid item xs={11}  align="center">
           <Typography variant="h1" component="h2" gutterBottom align="center">
             Diccionario Hurssel
           </Typography>
           <Typography className={classes.subtitulo1} variant="subtitle1" gutterBottom align="center">
             Léxico bilingüe (alemán y español) de expresiones definidas a partir de las obras de Edmund Husserl (1859-1938)
           </Typography>
+        </Grid>
+        <Grid item xs={1} align="center">
+          <MenuIdiomas/>
         </Grid>
       </Grid>
     )
