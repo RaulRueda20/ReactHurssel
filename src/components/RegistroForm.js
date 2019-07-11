@@ -5,53 +5,96 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/styles';
 
+import {loginService, webService} from '../js/webServices';
+import * as localStore from '../js/localStore';
+
 
 const stylesReg = {
-  subtitulo1:{
-    marginTop: 20,
-    fontSize: 20
-  },
-  subtitulo2:{
-    marginTop: 20,
-    fontSize: 30
-  },
+  // subtitulo1:{
+  //   marginTop: 20,
+  //   fontSize: 20
+  // },
+  // subtitulo2:{
+  //   marginTop: 20,
+  //   fontSize: 30
+  // },
   TextField1:{
     justify: 'center',
-    width:500,
-    marginTop: 40
+    width:"100%",
+
   },
   TextField2:{
     justify: 'center',
-    width:500,
-    marginTop: 30,
-    marginBottom: 12
-  },
-  boton:{
-    margin: 8,
-    align: 'left',
-    marginTop: 20
+    width:"100%",
   }
+  // boton:{
+  //   margin: 8,
+  //   align: 'left',
+  //   marginTop: 20
+  // }
+}
+
+var setStore = (user, pass) => {
+    var newSession = {"user" : user, "password" : pass}
+    newSession['ultimasVisitadas'] = []
+    newSession["ultimaVisitada"] = "alfabeto"
+    localStore.setObjects("sesion", newSession)
+    // linkTo("main.html")
 }
 
 class RegistroForm extends React.Component {
   state={ nombre:'', apellidos:'', escuela:'', puesto:'', pais:'', correo:'', password:'', repassword:''}
+
+   onFormSubmit = (event) => {
+     event.preventDefault();
+     var comprobacion = this.state.repassword
+        console.log(comprobacion)
+        var params = {
+            'nombre' : this.state.nombre,
+            'apellidos' : this.state.apellidos,
+            'email' : this.state.correo,
+            'institucion' : this.state.escuela,
+            'grado' : this.state.puesto,
+            'pais' : this.state.pais,
+            'password' : this.state.password
+        }
+        console.log(params)
+        if(params.password == this.state.repassword){
+          var service = "/login/registrar"
+          loginService(service, "POST", JSON.stringify(params), (data) => {
+            if(data.response){
+              var serviceh = "/login/sendRegistroEmail/" + localStore.getItem("es")
+              console.log(serviceh)
+              loginService(serviceh, "GET", {"nombre" : params.nombre,"email" : params.email,"pass" : params.password}, (data) => {
+                if(data.response){
+                  alert("Su registro ha concluido con exito!")
+                  setStore(params.email, params.password)
+                }else{
+                  alert("Hubo un error al enviar el correo electrónico de notificación.")
+                }
+              })
+            }else{
+              alert("El correo que intentó registrar ya ha sido ocupado.")
+            }
+          })
+        }else{
+          alert("Error: ", "El password no coincide con la comprobación.")
+        }
+      }
 
   render(){
     const{ nombre, apellidos, escuela, puesto, pais, correo, password, repassword} = this.state
     const { classes } = this.props;
 
     return (
-      <form>
-        <Grid container className={classes.texto1} direction="column" justify="center" alignItems="center" spacing={10}>
-          <Grid item>
-            <Typography className={classes.subtitulo2} variant="subtitle2" gutterBottom >
-              Registro
-            </Typography>
-          </Grid>
-          <Grid item>
+      <form onSubmit={this.onFormSubmit}>
+        <Typography variant="h3" align="center" gutterBottom >
+          Registro
+        </Typography>
+        <Grid className="gridsF" container direction="column" align="center" spacing={2}>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
               label="Nombre"
-              variant="outlined"
               id="custom-css-outlined-input"
               margin="normal"
               value={this.state.nombre}
@@ -59,91 +102,92 @@ class RegistroForm extends React.Component {
               className={classes.TextField1}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
               label="Apellido(s)"
-              variant="outlined"
               id="custom-css-outlined-input"
               value={this.state.apellidos}
               onChange={e => this.setState({apellidos: e.target.value})}
               className={classes.TextField2}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
               label="Institución/Escuela"
-              variant="outlined"
               id="custom-css-outlined-input"
               value={this.state.escuela}
               onChange={e => this.setState({escuela: e.target.value})}
               className={classes.TextField2}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
               label="Grado académico/Puesto"
-              variant="outlined"
               id="custom-css-outlined-input"
               value={this.state.puesto}
               onChange={e => this.setState({puesto: e.target.value})}
               className={classes.TextField2}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
               label="País"
-              variant="outlined"
               id="custom-css-outlined-input"
               value={this.state.pais}
               onChange={e => this.setState({pais: e.target.value})}
               className={classes.TextField2}
             />
-            <Grid item>
-              <TextField
-                label="Correo Electrónico"
-                variant="outlined"
-                id="custom-css-outlined-input"
-                value={this.state.correo}
-                onChange={e => this.setState({correo: e.target.value})}
-                className={classes.TextField2}
-              />
+          </Grid>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
+            <TextField
+              label="Correo Electrónico"
+              id="custom-css-outlined-input"
+              value={this.state.correo}
+              onChange={e => this.setState({correo: e.target.value})}
+              className={classes.TextField2}
+            />
+          </Grid>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
+            <TextField
+              label="Contraseña"
+              id="custom-css-outlined-input"
+              value={this.state.password}
+              onChange={e => this.setState({password: e.target.value})}
+              className={classes.TextField2}
+              type = "password"
+            />
+          </Grid>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
+            <TextField
+              label="Comprobación de contraseña"
+              id="custom-css-outlined-input"
+              value={this.state.repassword}
+              onChange={e => this.setState({repassword: e.target.value})}
+              className={classes.TextField2}
+              type = "password"
+            />
+          </Grid>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
+            <Grid container justify="flex-end" className="grids">
               <Grid item>
-                <TextField
-                  label="Contraseña"
-                  variant="outlined"
-                  id="custom-css-outlined-input"
-                  value={this.state.password}
-                  onChange={e => this.setState({password: e.target.value})}
-                  className={classes.TextField2}
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  label="Comprobación de contraseña"
-                  variant="outlined"
-                  id="custom-css-outlined-input"
-                  value={this.state.repassword}
-                  onChange={e => this.setState({repassword: e.target.value})}
-                  className={classes.TextField2}
-                />
+                <Button
+                  onClick={this.handleSubmit}
+                  color="primary"
+                  variant="contained"
+                  className={classes.boton}
+                  type="submit"
+                >
+                  Registrarse
+                </Button>
               </Grid>
             </Grid>
           </Grid>
-          <Grid item>
-            <Button
-              //onClick={this.handleSubmit}
-              variant="outlined"
-              color="primary"
-              className={classes.boton}
-              type="submit"
-            >
-              Registrarse
-            </Button>
-          </Grid>
-          ¿Ya está registrado?, Ingrese
-          <a onClick={() => this.props.setLogin(true)}>
-            aquí
-          </a>
+
+          <Grid item xs={12} sm={8} lg={7}>
+            <Typography variant = "h4">
+              ¿Ya está registrado?, Ingrese <a href="#" onClick={() => this.props.setLogin(true)}> aquí </a>
+            </Typography>
+        </Grid>
         </Grid>
       </form>
     )

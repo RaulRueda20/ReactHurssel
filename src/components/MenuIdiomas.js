@@ -1,38 +1,38 @@
 import React from 'react';
-import Fab from '@material-ui/core/Fab';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
+import IconButton from '@material-ui/core/IconButton';
 import Icon from '@material-ui/core/Icon';
+import Lang from "@material-ui/icons/Language"
 
 class MenuIdiomas extends React.Component{
-  state = { abrirIdiomas:false  }
+  state = {anchorEl : null}
 
 
-  setMenuIdio = () => {
-    this.setState({abrirIdiomas:true})
+  setMenuIdio = (event) => {
+    this.setState({anchorEl: event.currentTarget})
   }
 
   closeMenuIdio = () =>{
-    this.setState({abrirIdiomas:false})
+    this.setState({anchorEl:null})
   }
 
   render(){
+    const {anchorEl} = this.state
     return(
       <div>
-        <Fab
-          aria-label="Menu"
-          ria-controls="simple-menu"
+        <IconButton
           aria-haspopup="true"
+          aria-owns={anchorEl ? 'simple-menu': undefined}
           onClick={this.setMenuIdio}
         >
-          <Icon class="material-icons"> language </Icon>
-        </Fab>
+          <Lang fontSize="50px"/>
+        </IconButton>
         <Menu
           id="simple-menu"
-          anchorEl={this.anchorEl}
+          anchorEl={anchorEl}
           onClose={this.closeMenuIdio}
-          open={Boolean(this.anchorEl)}
-          open = {this.state.abrirIdiomas}
+          open={Boolean(anchorEl)}
         >
           <MenuItem onClick={this.closeMenuIdio}>Aleman</MenuItem>
           <MenuItem onClick={this.closeMenuIdio}>Español</MenuItem>

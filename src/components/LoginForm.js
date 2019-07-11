@@ -1,59 +1,60 @@
 import React from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/styles';
 
+import {loginService, webService} from '../js/webServices';
+import * as localStore from '../js/localStore';
+
 const stylesFor = {
-  subtitulo2:{
-    marginTop: 20,
-    fontSize: 40
-  },
-  footer1:{
-    marginTop: 70,
-    fontSize: 15
-  },
-  TextField1:{
+//   subtitulo2:{
+//     marginTop: 20,
+//     fontSize: 40
+//   },
+//   footer1:{
+//     marginTop: 70,
+//     fontSize: 15
+//   },
+ TextField1:{
     justify: 'center',
-    width:500,
-    marginTop: 10
-  },
+    width:"100%",
+   },
   TextField2:{
-    justify: 'center',
-    width:500,
-    marginTop: 10
-  },
-  boton:{
-    margin: 8,
-    align: 'left',
-    marginTop: 20
-  },
+     justify: 'center',
+     width:"100%",
+   }
+//   boton:{
+//     margin: 8,
+//     align: 'left',
+//     marginTop: 20
+//   }
+ }
+
+var setStore = (user, pass) => {
+    var newSession = {"user" : user, "password" : pass}
+    newSession['ultimasVisitadas'] = []
+    newSession["ultimaVisitada"] = "alfabeto"
+    localStore.setObjects("sesion", newSession)
+    // linkTo("main.html")
 }
 
 class LoginForm extends React.Component {
   state={  correo:'', password:'', errors:''}
 
-  serverUsername = "guest"
-
-  serverPassword = "abcde"
-
-  auth = "Basic" + btoa(this.serverUsername + ":" + this.serverPassword)
-
    onFormSubmit = (event) => {
     event.preventDefault();
-
-    axios({
-      method: 'POST',
-      contentType : 'application/json',
-      url: 'http://'+window.location.host+'/api/v1.0'+'/login/usuario',
-      data: {
-        userId : this.state.correo,
-        password: this.state.password
+    var service = "/login/usuario"
+    var params = JSON.stringify({'userId' : this.state.correo, 'password' : this.state.password})
+    loginService(service, "POST", params, (data) => {
+      console.log(data)
+      if(data.error){
+          alert("Error: ", data.error)
+      }else{
+          setStore(data.response, this.state.password)
       }
-    }).then((response) => {
-      console.log(response)
     })
   }
 
@@ -65,16 +66,14 @@ class LoginForm extends React.Component {
 
     return (
       <form onSubmit={this.onFormSubmit}>
-        <Grid container className={classes.texto1} direction="column" justify="center" alignItems="center" spacing={10}>
-          <Grid item>
-            <Typography className={classes.subtitulo2} variant="subtitle2" gutterBottom >
-              Inicio
-            </Typography>
-          </Grid>
-          <Grid item>
+        <Typography variant="h3" align="center" gutterBottom >
+          Inicio
+        </Typography>
+        <Grid className="gridsF" container direction="column" alignItems="center" spacing={2}>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
               label="Correo Electrónico"
-              variant="outlined"
+              // variant="outlined"
               id="custom-css-outlined-input"
               margin="normal"
               value={this.state.correo}
@@ -82,10 +81,10 @@ class LoginForm extends React.Component {
               className={classes.TextField1}
             />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} sm={8} lg={7} className="grids">
             <TextField
               label="Contraseña"
-              variant="outlined"
+              // variant="outlined"
               id="custom-css-outlined-input"
               value={this.state.password}
               onChange={e => this.setState({password: e.target.value})}
@@ -93,22 +92,27 @@ class LoginForm extends React.Component {
               type = "password"
             />
           </Grid>
-          <Grid item>
-            <Button
-              onClick={this.onSubmitRegistre}
-              variant="outlined"
-              color="primary"
-              className={classes.boton}
-              type="submit"
-            >
-              Ingresar
-            </Button>
+
+          <Grid item xs={12} sm={8} lg={7} className="grids">
+            <Grid container justify="flex-end" className="grids">
+              <Grid item>
+                <Button
+                  onClick={this.onSubmitRegistre}
+                  variant="contained"
+                  color="primary"
+                  className={classes.boton}
+                  type="submit"
+                >
+                  Ingresar
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid item>
-          Si no está registrado, registrarse
-          <a onClick={() => this.props.setLogin(false) }>
-            aquí
-          </a>
+
+          <Grid item xs={12} sm={8} lg={7}>
+            <Typography variant = "h4">
+              Si no está registrado, registrarse <a href="#" onClick={() => this.props.setLogin(false) }> aquí</a>
+            </Typography>
           </Grid>
         </Grid>
       </form>

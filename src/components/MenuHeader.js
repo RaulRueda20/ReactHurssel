@@ -5,34 +5,33 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 
 class MenuHeader extends React.Component{
-  state = { abrir:false  }
+  state = { anchorEl : null  }
 
-  setMenu = () => {
-    this.setState({abrir:true})
+  setMenu = (event) => {
+    this.setState({anchorEl: event.currentTarget})
   }
 
   closeMenu = () =>{
-    this.setState({abrir:false})
+    this.setState({anchorEl:null})
   }
 
   render(){
+    const {anchorEl} = this.state
     return(
       <div>
         <IconButton
-          edge="start"
-          aria-label="Menu"
-          ria-controls="simple-menu"
           aria-haspopup="true"
+          aria-owns={anchorEl ? 'simple-menu': undefined}
           onClick={this.setMenu}
         >
           <MenuIcon />
         </IconButton>
         <Menu
           id="simple-menu"
-          anchorEl={this.anchorEl}
+          anchorEl={anchorEl}
           keepMounted
           onClose={this.closeMenu}
-          open = {this.state.abrir}
+          open={Boolean(anchorEl)}
         >
           <MenuItem onClick={this.closeMenu}>Diccionario</MenuItem>
           <MenuItem onClick={this.closeMenu}>Acerca del Diccionario</MenuItem>

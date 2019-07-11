@@ -1,14 +1,14 @@
 import React from 'react';
 import {BrowserRouter, Route} from 'react-router-dom';
 import LoRe from './LoRe';
-import Acercade from './Acercade';
+import Diccionario from './Diccionario';
 
 const App = () => {
   return (
     <div>
       <BrowserRouter>
         <Route path = "/" exact component ={LoRe} />
-        <Route path = "/diccionario/main" exact component ={Acercade} />
+        <Route path = "/diccionario/main" exact component ={Diccionario} />
       </BrowserRouter>
     </div>
   )
