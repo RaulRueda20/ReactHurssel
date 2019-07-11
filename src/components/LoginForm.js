@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import { withStyles } from '@material-ui/styles';
 
+import Modals from './Modal';
 import {loginService, webService} from '../js/webServices';
 import * as localStore from '../js/localStore';
 
@@ -42,7 +43,7 @@ var setStore = (user, pass) => {
 }
 
 class LoginForm extends React.Component {
-  state={  correo:'', password:'', errors:''}
+  state={  correo:'', password:''}
 
    onFormSubmit = (event) => {
     event.preventDefault();
@@ -92,7 +93,7 @@ class LoginForm extends React.Component {
               type = "password"
             />
           </Grid>
-
+          <Modals/>
           <Grid item xs={12} sm={8} lg={7} className="grids">
             <Grid container justify="flex-end" className="grids">
               <Grid item>
@@ -100,7 +101,6 @@ class LoginForm extends React.Component {
                   onClick={this.onSubmitRegistre}
                   variant="contained"
                   color="primary"
-                  className={classes.boton}
                   type="submit"
                 >
                   Ingresar

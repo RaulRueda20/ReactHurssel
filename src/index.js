@@ -45,7 +45,7 @@ theme.typography.h4={
 }
 
 theme.typography.h5={
-  fontSize : "0.5rem",
+  fontSize : "0.90rem",
   fontFamily: "ROBOTO",
   fontWeight: "lighter"
 }

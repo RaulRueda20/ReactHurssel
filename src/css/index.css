@@ -48,3 +48,10 @@ h1{
 .divisor{
   margin: 10px 0px !important;
 }
+
+#simple-menu div.MuiPaper-root{
+  box-shadow: none;
+  margin-top: 45px;
+  
+  background-color: rgba(0,0,0,0);
+}
